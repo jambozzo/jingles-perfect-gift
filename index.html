@@ -1,0 +1,145 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<meta http-equiv="refresh" content="2; url=/jinglesperfectgift/">
+<title>Kailan Studios</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Fraunces:ital,opsz,wght@0,9..144,500;0,9..144,600;1,9..144,500&family=Crimson+Pro:ital,wght@0,400;1,400&display=swap" rel="stylesheet">
+<style>
+  :root{
+    --maroon-dark:#3E1118;
+    --maroon:#55181F;
+    --cream:#F4E7C7;
+    --cream-dim:#E4D1A8;
+    --gold:#D9A94A;
+    --gold-bright:#EFC869;
+  }
+  *{box-sizing:border-box; margin:0; padding:0;}
+  html,body{height:100%;}
+  body{
+    background:
+      radial-gradient(circle at 50% 18%, rgba(239,200,105,0.10), transparent 55%),
+      linear-gradient(170deg, var(--maroon) 0%, var(--maroon-dark) 100%);
+    color:var(--cream);
+    font-family:'Crimson Pro', Georgia, serif;
+    display:flex;
+    align-items:center;
+    justify-content:center;
+    overflow:hidden;
+    padding-top:env(safe-area-inset-top,0px);
+    padding-bottom:env(safe-area-inset-bottom,0px);
+    -webkit-font-smoothing:antialiased;
+  }
+
+  .snow{
+    position:fixed;
+    inset:0;
+    pointer-events:none;
+    z-index:0;
+  }
+  .flake{
+    position:absolute;
+    top:-5%;
+    border-radius:50%;
+    background:var(--gold-bright);
+    opacity:0.5;
+    animation:fall linear infinite;
+  }
+  @keyframes fall{
+    to{ transform:translateY(110vh); }
+  }
+
+  main{
+    position:relative;
+    z-index:1;
+    text-align:center;
+    padding:32px;
+    max-width:420px;
+  }
+
+  .mark{
+    font-family:'Fraunces', serif;
+    font-weight:600;
+    font-size:clamp(2rem, 1.5rem + 2vw, 2.8rem);
+    color:var(--gold-bright);
+    letter-spacing:0.01em;
+  }
+
+  .tagline{
+    margin-top:10px;
+    font-style:italic;
+    color:var(--cream-dim);
+    font-size:1.05rem;
+  }
+
+  .divider{
+    width:44px;
+    height:1px;
+    background:var(--gold);
+    margin:28px auto;
+    opacity:0.6;
+  }
+
+  p.lead{
+    font-size:1rem;
+    color:var(--cream-dim);
+  }
+
+  a.enter{
+    display:inline-block;
+    margin-top:22px;
+    font-family:'Fraunces', serif;
+    font-weight:500;
+    font-style:italic;
+    color:var(--gold-bright);
+    text-decoration:none;
+    border-bottom:1px solid rgba(239,200,105,0.45);
+    padding-bottom:2px;
+  }
+  a.enter:hover{border-color:var(--gold-bright);}
+  a.enter:focus-visible{outline:2px solid var(--gold-bright); outline-offset:4px;}
+
+  @media (prefers-reduced-motion: reduce){
+    .flake{animation:none; display:none;}
+  }
+</style>
+</head>
+<body>
+
+<div class="snow" aria-hidden="true" id="snow"></div>
+
+<main>
+  <div class="mark">Kailan Studios</div>
+  <p class="tagline">Illustration &amp; storytelling</p>
+  <div class="divider"></div>
+  <p class="lead">Taking you to <em>Jingle's&nbsp;Perfect&nbsp;Gift</em>&hellip;</p>
+  <a class="enter" href="/jinglesperfectgift/">Enter now</a>
+</main>
+
+<noscript>
+  <meta http-equiv="refresh" content="0; url=/jinglesperfectgift/">
+</noscript>
+
+<script>
+(function(){
+  var container = document.getElementById('snow');
+  var count = 18;
+  for (var i = 0; i < count; i++) {
+    var f = document.createElement('div');
+    f.className = 'flake';
+    var size = 3 + Math.random() * 4;
+    f.style.width = size + 'px';
+    f.style.height = size + 'px';
+    f.style.left = (Math.random() * 100) + 'vw';
+    f.style.animationDuration = (7 + Math.random() * 8) + 's';
+    f.style.animationDelay = (Math.random() * -10) + 's';
+    container.appendChild(f);
+  }
+})();
+</script>
+
+</body>
+</html>
