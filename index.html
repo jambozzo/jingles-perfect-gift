@@ -295,6 +295,17 @@
     text-align:center;
   }
 
+  .order-thanks{
+    max-width:520px;
+    margin:36px auto 0;
+    text-align:center;
+    padding:32px 26px;
+    border:1px solid rgba(217,169,74,0.4);
+    border-radius:4px;
+  }
+  .order-thanks h3{font-size:1.4rem; margin-bottom:10px;}
+  .order-thanks p{color:var(--cream-dim);}
+
   /* ---------- FOOTER ---------- */
   footer{
     padding:40px 0 calc(40px + env(safe-area-inset-bottom,0px));
@@ -375,17 +386,17 @@
     </div>
 
     <div class="cards">
-      <div class="card">
-        <h3>Order a signed copy</h3>
-        <p>Shipped from the author's own stock, with a personalized message included. Takes about 7&ndash;10 business days.</p>
-        <p class="price">$34.99</p>
-        <a class="btn btn-primary" href="#order-form">Order now</a>
-      </div>
       <div class="card card-soon">
         <h3>Order from the publisher</h3>
         <p>Printed on demand and shipped directly &mdash; available soon.</p>
         <p class="price">$29.99</p>
         <span class="btn btn-ghost btn-disabled" aria-disabled="true">Coming soon</span>
+      </div>
+      <div class="card">
+        <h3>Order a signed copy</h3>
+        <p>Shipped from the author's own stock, with a personalized message included. Takes about 7&ndash;10 business days.</p>
+        <p class="price">$34.99</p>
+        <a class="btn btn-primary" href="#order-form">Order now</a>
       </div>
     </div>
 
@@ -398,10 +409,12 @@
     <h2>Order a signed copy</h2>
     <div class="divider"></div>
     <div class="body-text">
-      <p>Fill this out and it'll open an email with your order details &mdash; just hit send. We'll follow up with payment and shipping.</p>
+      <p>Fill this out and submit &mdash; your order goes straight to us. We'll follow up with payment and shipping.</p>
     </div>
 
-    <form id="orderForm" class="order-form" novalidate>
+    <form id="orderForm" class="order-form" novalidate
+          action="https://script.google.com/macros/s/AKfycbzGyQodGu2LbicFC9uXA0cGskszBNbjKsvUGUR7Y2S11CL3FbVd4ZGPqOiVnUTl47pC/exec"
+          method="POST" target="order-form-frame">
       <div class="field">
         <label for="of-name">Your name</label>
         <input type="text" id="of-name" name="name" required autocomplete="name">
@@ -433,8 +446,15 @@
       </div>
 
       <button type="submit" class="btn btn-primary">Send order</button>
-      <p class="form-note">This opens your email app with the details filled in &mdash; nothing is sent until you hit send there.</p>
+      <p class="form-note">Your order is sent directly &mdash; nothing opens on your device.</p>
     </form>
+
+    <div id="orderThanks" class="order-thanks" hidden>
+      <h3>Order received!</h3>
+      <p>Thanks &mdash; your order's on its way to us. We'll be in touch shortly about payment and shipping.</p>
+    </div>
+
+    <iframe name="order-form-frame" style="display:none" aria-hidden="true"></iframe>
   </div>
 </section>
 
@@ -448,41 +468,20 @@
 <script>
 (function(){
   var form = document.getElementById('orderForm');
-  if(!form) return;
-  form.addEventListener('submit', function(e){
-    e.preventDefault();
-    var name = form.name.value.trim();
-    var email = form.email.value.trim();
-    var qty = form.qty.value.trim();
-    var address = form.address.value.trim();
-    var personalize = form.personalize.value.trim();
-    var notes = form.notes.value.trim();
+  var thanks = document.getElementById('orderThanks');
+  var frame = document.querySelector('iframe[name="order-form-frame"]');
+  if(!form || !frame) return;
 
-    var subject = "Jingle's Perfect Gift order \u2014 " + name;
-    var bodyLines = [
-      "Name: " + name,
-      "Email: " + email,
-      "Quantity: " + qty,
-      "",
-      "Shipping address:",
-      address,
-      ""
-    ];
-    if(personalize){
-      bodyLines.push("Personalization: " + personalize);
-      bodyLines.push("");
-    }
-    if(notes){
-      bodyLines.push("Notes: " + notes);
-      bodyLines.push("");
-    }
-    bodyLines.push("(Sent from the Jingle's Perfect Gift order form)");
+  var submitted = false;
 
-    var mailto = "mailto:kailan@kailanstudios.com"
-      + "?subject=" + encodeURIComponent(subject)
-      + "&body=" + encodeURIComponent(bodyLines.join("\n"));
+  form.addEventListener('submit', function(){
+    submitted = true; // let the form actually submit to the hidden iframe
+  });
 
-    window.location.href = mailto;
+  frame.addEventListener('load', function(){
+    if(!submitted) return; // ignore the iframe's initial blank load
+    form.hidden = true;
+    if(thanks) thanks.hidden = false;
   });
 })();
 </script>
